@@ -6,27 +6,13 @@ public class Main {
 
     }
 
-    public static int randomKey(HashMap<Integer, String> randomKey) {
-        // случайный ключ
-        Random random = new Random();
-        List<Integer> keys = new ArrayList<>(randomKey.keySet());
-        int indexKey = keys.get(random.nextInt(randomKey.size()));
-        return indexKey;
-    }
-
-    public static String returnKeyWord(int key, HashMap<Integer, String> dictionary) {
-        // получения элемента по ключу
-        return dictionary.get(key);
-    }
-
     public static boolean check(String userAnswer, String keyWord) {
         // Проверка
         return userAnswer.equals(keyWord);
     }
-
     public static void play() {
-
-        HashMap useddd = userDictionary();
+        UserDictionary userDictionary = new UserDictionary();
+        HashMap useddd = (HashMap) userDictionary();
 
         System.out.println("Сейчас будет игра, где мы проверим вашу память^^");
         System.out.println("Надеюсь, что вы запомнили название слов, котоыре вводили под нумирацию цифр");
@@ -38,11 +24,11 @@ public class Main {
         int falseAnswerUser = 0;
         while (true) {
 
-            int keyIndex = randomKey(useddd);
+            int keyIndex = userDictionary.randomKey(useddd);
             System.out.println("Слово под номером: " + keyIndex);
             String userAnswer = scanner.nextLine();
 
-            if (check(userAnswer, returnKeyWord(keyIndex, useddd))) trueAnswerUser++;
+            if (check(userAnswer, userDictionary.returnKeyWord(keyIndex, useddd))) trueAnswerUser++;
             else falseAnswerUser++;
             if (cont == 10) break;
 
@@ -51,17 +37,18 @@ public class Main {
         theFinal(trueAnswerUser, falseAnswerUser);
     }
 
-    public static HashMap userDictionary() {
+    public static Map userDictionary() {
         Scanner scanner = new Scanner(System.in);
-        HashMap<Integer, String> dictionary = new HashMap<Integer, String>();
+        UserDictionary userDictionary = new UserDictionary();
         int cont = 0;
         System.out.println("Ввидите десять слов");
-        while (cont < 11) {
+        while (cont < 3) {
             System.out.println("Ввидите слово под номером " + cont + ": ");
             String userWord = scanner.nextLine();
-            dictionary.put(cont, userWord);
+            userDictionary.addToDictionary(cont,userWord);
             cont++;
         }
+            Map<Integer, String>  dictionary = userDictionary.getDictionary();
         return dictionary;
     }
         public static void theFinal(int trueAnswerUser, int falseAnswerUser){
